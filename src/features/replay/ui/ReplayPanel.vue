@@ -35,13 +35,17 @@ defineEmits<{ seek: [cursor: number]; play: []; stop: []; download: [] }>();
         <small>{{ String(e.id).padStart(2, "0") }}</small
         >{{ e.label
         }}<span>{{
-          e.kind === "move"
-            ? "↗"
-            : e.kind === "skill"
-              ? "✧"
-              : e.kind === "terrain"
-                ? "△"
-                : "→"
+          e.chain?.length
+            ? "⛓"
+            : e.kind === "move"
+              ? "↗"
+              : e.kind === "skill"
+                ? "✧"
+                : e.kind === "terrain"
+                  ? "△"
+                  : e.kind === "trap-deploy"
+                    ? "◈"
+                    : "→"
         }}</span>
       </button>
     </div>

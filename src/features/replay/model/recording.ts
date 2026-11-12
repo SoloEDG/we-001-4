@@ -1,4 +1,4 @@
-import type { Battle, EventKind, Point, Session } from "../../../shared/types";
+import type { Battle, ChainStep, EventKind, Point, Session } from "../../../shared/types";
 import { clone } from "../../../shared/document";
 export function record(
   s: Session,
@@ -6,6 +6,7 @@ export function record(
   kind: EventKind,
   label: string,
   path: Point[] = [],
+  chain: ChainStep[] = [],
 ) {
   s.events.push({
     id: s.events.length + 1,
@@ -15,6 +16,7 @@ export function record(
     path: clone(path),
     before: clone(before),
     after: clone(s.live),
+    chain: chain.length ? clone(chain) : undefined,
   });
 }
 export function frame(s: Session, cursor: number) {

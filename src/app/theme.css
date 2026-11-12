@@ -370,6 +370,40 @@ aside {
 .tile.trail {
   background: #867b47;
 }
+.tile.chain-fire {
+  box-shadow: inset 0 0 0 2px #e2c47d, inset 0 0 14px #e2c47d88;
+  z-index: 2;
+}
+.danger-mark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.danger-mark.trap {
+  box-shadow: inset 0 0 0 1px #c46a5a;
+}
+.danger-mark.terrain,
+.danger-mark.status,
+.danger-mark.damage {
+  background: radial-gradient(circle, #b5543f33 0%, #b5543f18 70%);
+}
+.danger-mark.push {
+  background: linear-gradient(90deg, #c4844a22, #c4844a55);
+}
+.trap-mark {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  z-index: 1;
+  color: #e0a58d;
+  font-size: 13px;
+  text-shadow: 0 0 4px #000;
+}
+.trap-mark.spent {
+  color: #6d7a6c;
+  font-size: 11px;
+}
 .ground {
   position: absolute;
   inset: 0;
@@ -525,6 +559,139 @@ footer {
 footer b {
   color: #b5a374;
   margin: 0 10px;
+}
+/* 压力机关面板 */
+.trap-templates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+.trap-templates button {
+  padding: 8px 6px;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+.trap-templates b {
+  font-size: 18px;
+  color: #e0a58d;
+}
+.trap-desc {
+  font-size: 10px;
+  min-height: 30px;
+  margin: 10px 0;
+}
+.trap-config {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.trap-config label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #9db0a1;
+}
+.trap-config select {
+  flex: 1;
+  background: #202c29;
+  color: inherit;
+  border: 1px solid #34423c;
+  border-radius: 4px;
+  padding: 5px;
+  font: inherit;
+  font-size: 10px;
+}
+.trap-config input[type="range"] {
+  flex: 1;
+  margin: 0;
+  accent-color: #c7b679;
+}
+.trap-config i {
+  font-style: normal;
+  color: #c5b783;
+  min-width: 32px;
+  text-align: right;
+}
+.trap-effects {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.chip {
+  font-size: 9px;
+  border: 1px solid #5a6b58;
+  border-radius: 10px;
+  padding: 2px 8px;
+  color: #b9c8b6;
+}
+.trap-actions {
+  display: flex;
+  gap: 6px;
+}
+.trap-actions button {
+  flex: 1;
+  font-size: 11px;
+  padding: 9px 6px;
+}
+.trap-hint {
+  font-size: 9px;
+  margin: 8px 0 0;
+  color: #789188;
+}
+/* 连锁回放 */
+.chain-box {
+  margin-top: 14px;
+  border: 1px solid #6b5a3a;
+  background: #221f18;
+}
+.chain-trace {
+  padding: 12px 14px;
+}
+.chain-head {
+  font-size: 11px;
+  color: #e2c47d;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.chain-head small {
+  color: #8a8466;
+}
+.chain-trace ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.chain-trace li {
+  display: flex;
+  gap: 8px;
+  font-size: 10px;
+  color: #a9b8a8;
+  padding-left: 14px;
+  border-left: 2px solid #4a4632;
+}
+.chain-trace li.root {
+  border-left-color: #c4a35e;
+  color: #d8d2b8;
+}
+.chain-trace li.died {
+  border-left-color: #b5543f;
+  color: #e0a093;
+}
+.chain-no {
+  color: #7d8a79;
+  font-family: "Space Grotesk", monospace;
 }
 @media (min-width: 1550px) {
   .workspace {

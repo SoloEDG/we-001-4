@@ -7,6 +7,7 @@ export function newSession(): Session {
   const live: Battle = {
     tiles: createMap(),
     units: createUnits(),
+    traps: [],
     round: 1,
     queue: [],
     active: "",

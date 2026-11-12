@@ -1,15 +1,30 @@
 <script setup lang="ts">
-import type { Battle, Point } from "../../../shared/types";
+import type {
+  Battle,
+  Point,
+  Trap,
+} from "../../../shared/types";
 import { key } from "../../../shared/document";
 import { terrainRules } from "../lib/cost";
-defineProps<{
+import type { DangerCell } from "../../traps";
+
+const props = defineProps<{
   battle: Battle;
   selected: string;
   routes: string[];
   targets: string[];
   path: Point[];
+  danger: Map<string, DangerCell[]>;
+  chainFocus: Set<string>;
 }>();
-defineEmits<{ cell: [point: Point] }>();
+defineEmits<{ cell: [point: Point]; erase: [point: Point] }>();
+
+function trapOn(p: Point): Trap | undefined {
+  return props.battle.traps.find((t) => key(t) === key(p));
+}
+function dangerMarkers(p: Point): string[] {
+  return [...new Set((props.danger.get(key(p)) ?? []).map((d) => d.marker))];
+}
 </script>
 <template>
   <section class="map-frame">
@@ -28,13 +43,26 @@ defineEmits<{ cell: [point: Point] }>();
             reachable: routes.includes(key(tile)),
             target: targets.includes(key(tile)),
             trail: path.some((p) => key(p) === key(tile)),
+            'chain-fire': chainFocus.has(key(tile)),
           },
         ]"
         :aria-label="`${tile.x},${tile.y} ${terrainRules[tile.terrain].name}`"
         @click="$emit('cell', tile)"
+        @contextmenu.prevent="$emit('erase', tile)"
       >
-        <span class="ground">{{ terrainRules[tile.terrain].glyph }}</span
-        ><template
+        <span class="ground">{{ terrainRules[tile.terrain].glyph }}</span>
+        <span
+          v-for="m in dangerMarkers(tile)"
+          :key="m"
+          :class="['danger-mark', m]"
+          />
+        <span
+          v-if="trapOn(tile)"
+          :class="['trap-mark', { spent: trapOn(tile)!.spent }]"
+          :title="trapOn(tile)!.name"
+          >{{ trapOn(tile)!.spent ? "○" : "◈" }}</span
+        >
+        <template
           v-for="unit in battle.units.filter(
             (u) => u.hp > 0 && key(u) === key(tile),
           )"
@@ -64,7 +92,7 @@ defineEmits<{ cell: [point: Point] }>();
       </button>
     </div>
     <div class="map-caption">
-      <span>浅滩纵贯南北 · 中央石桥可快速渡河</span
+      <span>◈ 未消耗机关　○ 已消耗　红纹=危险预览　金框=本次连锁来源</span
       ><span>◇ 当前行动　● 可移动　◈ 技能目标</span>
     </div>
   </section>
